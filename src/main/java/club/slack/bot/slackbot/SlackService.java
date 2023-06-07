@@ -4,6 +4,7 @@ import com.slack.api.Slack;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
+import com.slack.api.model.User;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +17,16 @@ public class SlackService {
 
 	private final SlackProperties properties;
 
+	//realName이 Slack의 Nickname이다.
 	public String getSlackNameByEmail(String email){
 		String slackId = "";
 
 		try{
 			MethodsClient methods = Slack.getInstance().methods(properties.getSlackToken());
 
-			String name = methods.usersLookupByEmail(r -> r.email(email)).getUser().getName();
+			User user = methods.usersLookupByEmail(r -> r.email(email)).getUser();
 
-			slackId = "<@" + name + ">";
+			slackId = "<@" + user.getRealName() + ">";
 		} catch (SlackApiException | IOException e) {
 			log.error(e.getMessage());
 		}
