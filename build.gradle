@@ -19,11 +19,15 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Slack Bolt
+	implementation("com.slack.api:bolt:1.29.2")
+	implementation("com.slack.api:bolt-servlet:1.29.2")
+	implementation("com.slack.api:bolt-jetty:1.29.2")
 }
 
 tasks.named('test') {
