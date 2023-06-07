@@ -15,7 +15,7 @@ public class SomeEventService {
 		System.out.println("서비스에서 이벤트를 발행하였다~~!");
 		applicationEventPublisher.publishEvent(
 			OverdueSlackEvent.builder()
-				.intraId("이것은 인트라 아이디여")
+				.intraId("sanan")
 				.expiredAt(LocalDateTime.now())
 				.build());
 	}

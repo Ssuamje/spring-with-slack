@@ -34,6 +34,25 @@ public class SlackService {
 		return slackId;
 	}
 
+	public void sendSlackDirectMessage(String message, String email){
+		try{
+			MethodsClient methods = Slack.getInstance().methods(properties.getSlackToken());
+
+			User user = methods.usersLookupByEmail(r -> r.email(email)).getUser();
+
+			ChatPostMessageRequest request = ChatPostMessageRequest.builder()
+					.channel(user.getId())
+					.text(message)
+					.build();
+
+			methods.chatPostMessage(request);
+
+			log.info("Slack DM 에 메시지 보냄");
+		} catch (SlackApiException | IOException e) {
+			log.error(e.getMessage());
+		}
+	}
+
 	public void sendSlackMessage(String message, String channel){
 
 		String channelAddress = "";
