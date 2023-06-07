@@ -5,16 +5,17 @@ import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SlackService {
 
-	@Value("${slack.token}")
-	String slackToken;
+	private final SlackProperties properties;
 
 	public void sendSlackMessage(String message, String channel){
 
@@ -22,13 +23,13 @@ public class SlackService {
 
 		// 채널 값을 전달받아 올바른 슬랙채널로 분기
 		if(channel.equals("error")){
-			channelAddress = SlackConstant.ERROR_CHANNEL;
+			channelAddress = properties.getErrorChannelName();
 		} else if(channel.equals("batch")){
-			channelAddress = SlackConstant.BATCH_CHANNEL;
+			channelAddress = properties.getBatchChannelName();
 		}
 
 		try{
-			MethodsClient methods = Slack.getInstance().methods(slackToken);
+			MethodsClient methods = Slack.getInstance().methods(properties.getSlackToken());
 
 			ChatPostMessageRequest request = ChatPostMessageRequest.builder()
 					.channel(channelAddress)

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class SlackProperties {
+	@Value("${slack.token}")
+	private String slackToken;
 
 	@Value("${slack.channels.error[0].name}")
 	private String errorChannelName;
